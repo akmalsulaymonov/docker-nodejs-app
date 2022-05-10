@@ -1,0 +1,26 @@
+version: "3.9"  # optional since v1.27.0
+
+services:
+  server-api:
+    container_name: backend
+    build: ./
+    command: npm start
+    working_dir: /usr/src/docker-nodejs/server
+    environment:
+      POSTGRES_URI: postgres://username:password@postgres:5432/database
+    links:
+      - postgres
+    ports:
+      - "3001:3001"
+    volumes:
+      - ./:/usr/src/docker-nodejs/server
+
+  postgres:
+    environment:
+      POSTGRES_USER: username
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: database
+      POSTGRES_HOST: postgres
+    build: ./postgres
+    ports:
+      - "5432:5432"
